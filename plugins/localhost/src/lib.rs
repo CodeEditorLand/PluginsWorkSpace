@@ -22,21 +22,48 @@ use tiny_http::{Header, Response as HttpResponse, Server};
 
 pub struct Request {
     url: String,
+    body: Vec<u8>,
+    method: String,
 }
 
 impl Request {
     pub fn url(&self) -> &str {
         &self.url
     }
+
+    pub fn body(&self) -> &[u8] {
+        &self.body
+    }
+
+    pub fn method(&self) -> &str {
+        &self.method
+    }
 }
 
 pub struct Response {
     headers: HashMap<String, String>,
+    status_code: u16,
+    body: Vec<u8>,
+    handled: bool,
 }
 
 impl Response {
     pub fn add_header<H: Into<String>, V: Into<String>>(&mut self, header: H, value: V) {
         self.headers.insert(header.into(), value.into());
+    }
+
+    pub fn set_status(&mut self, code: u16) {
+        self.status_code = code;
+    }
+
+    pub fn set_body(&mut self, body: Vec<u8>) {
+        self.body = body;
+    }
+
+    /// Mark as handled — the plugin will send this response instead of
+    /// looking up a static asset. Use for proxy routes, health checks, etc.
+    pub fn set_handled(&mut self, handled: bool) {
+        self.handled = handled;
     }
 }
 
@@ -82,22 +109,50 @@ impl Builder {
                 std::thread::spawn(move || {
                     let server =
                         Server::http(format!("{host}:{port}")).expect("Unable to spawn server");
-                    for req in server.incoming_requests() {
-                        let path = req
+                    for mut req in server.incoming_requests() {
+                        let path: String = req
                             .url()
                             .parse::<Uri>()
                             .map(|uri| uri.path().into())
                             .unwrap_or_else(|_| req.url().into());
 
+                        // Read request body (for proxy routes, webhooks, etc.)
+                        let mut body_bytes = Vec::new();
+                        let _ = std::io::Read::read_to_end(req.as_reader(), &mut body_bytes);
+
+                        let request = Request {
+                            url: req.url().into(),
+                            body: body_bytes,
+                            method: req.method().to_string(),
+                        };
+                        let mut response = Response {
+                            headers: Default::default(),
+                            status_code: 200,
+                            body: Vec::new(),
+                            handled: false,
+                        };
+
+                        // Call on_request first — it may handle proxy routes
+                        if let Some(on_request) = &on_request {
+                            on_request(&request, &mut response);
+                        }
+
+                        // If on_request marked as handled, send custom response
+                        if response.handled {
+                            let mut resp = HttpResponse::from_data(response.body)
+                                .with_status_code(response.status_code);
+                            for (header, value) in response.headers {
+                                if let Ok(h) = Header::from_bytes(header.as_bytes(), value) {
+                                    resp.add_header(h);
+                                }
+                            }
+                            let _ = req.respond(resp);
+                            continue;
+                        }
+
+                        // Standard asset serving
                         #[allow(unused_mut)]
                         if let Some(mut asset) = asset_resolver.get(path) {
-                            let request = Request {
-                                url: req.url().into(),
-                            };
-                            let mut response = Response {
-                                headers: Default::default(),
-                            };
-
                             response.add_header("Content-Type", asset.mime_type);
                             if let Some(csp) = asset.csp_header {
                                 response
@@ -108,10 +163,6 @@ impl Builder {
                             response
                                 .headers
                                 .insert("Cache-Control".into(), "no-cache".into());
-
-                            if let Some(on_request) = &on_request {
-                                on_request(&request, &mut response);
-                            }
 
                             let mut resp = HttpResponse::from_data(asset.bytes);
                             for (header, value) in response.headers {

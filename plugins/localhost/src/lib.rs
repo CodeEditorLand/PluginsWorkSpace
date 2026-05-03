@@ -83,10 +83,10 @@ fn resolve_extension_path(
     // separator after `/Extension/`. Restore the absolute-path
     // indicator before constructing the `PathBuf`:
     //
-    //   Unix path:    `/Users/nikola/.land/extensions/<id>/...`
-    //   URL emitted:  `<origin>/Extension/Users/nikola/...`
-    //   After strip:  `Users/nikola/...`             (relative!)
-    //   After prefix: `/Users/nikola/...`            (absolute)
+    //   Unix path:    `/<home>/.land/extensions/<id>/...`
+    //   URL emitted:  `<origin>/Extension/<home>/...`
+    //   After strip:  `<home>/...`                   (relative!)
+    //   After prefix: `/<home>/...`                  (absolute)
     //
     // Windows paths arrive with a drive prefix (`C:/...`) and need
     // no synthetic leading slash; detect by checking the second

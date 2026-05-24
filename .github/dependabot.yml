@@ -1,0 +1,645 @@
+version: 2
+enable-beta-ecosystems: true
+
+updates:
+    - package-ecosystem: "github-actions"
+      directory: "/"
+      schedule:
+          interval: "daily"
+
+    - package-ecosystem: "cargo"
+      directory: "/"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/examples/api"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/examples/api/src-tauri"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/autostart"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/autostart"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/barcode-scanner"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/barcode-scanner"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/biometric"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/biometric"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/cli"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/cli"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/clipboard-manager"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/clipboard-manager"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/deep-link"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/deep-link/examples/app"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/deep-link/examples/app/src-tauri"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/deep-link"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/dialog"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/dialog"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/fs"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/fs"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/geolocation"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/geolocation"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/global-shortcut"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/global-shortcut"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/haptics"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/haptics"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/http"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/http"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/localhost"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/log"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/log"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/nfc"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/nfc"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/notification"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/notification"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/opener"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/opener"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/os"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/os"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/persisted-scope"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/positioner"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/positioner"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/process"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/process"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/shell"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/shell"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/single-instance"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/single-instance/examples/vanilla"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/single-instance/examples/vanilla/src-tauri"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/sql"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/sql"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/store"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/store/examples/AppSettingsManager"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/store/examples/AppSettingsManager/src-tauri"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/store"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/stronghold"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/stronghold"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/updater"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/updater"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/updater/tests/app-updater"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/updater/tests/updater-migration"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/updater/tests/updater-migration/v1-app"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/updater/tests/updater-migration/v1-app"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/updater/tests/updater-migration/v2-app"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/upload"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/upload"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/websocket"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/websocket/examples/tauri-app"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/websocket/examples/tauri-app/src-tauri"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/websocket"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/plugins/window-state"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/plugins/window-state"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"
+
+    - package-ecosystem: "cargo"
+      directory: "/shared/template"
+      schedule:
+          interval: "daily"
+      versioning-strategy: lockfile-only
+      
+
+    - package-ecosystem: "npm"
+      directory: "/shared/template"
+      schedule:
+          interval: "daily"
+      versioning-strategy: increase
+      ignore:
+          - dependency-name: "tailwindcss"
+            versions:
+                - "^4.0.0"

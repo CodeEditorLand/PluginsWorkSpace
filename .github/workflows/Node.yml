@@ -1,0 +1,656 @@
+name: Node
+
+concurrency:
+    group: Node-${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    security-events: write
+    contents: write
+    pull-requests: write
+
+on:
+    workflow_dispatch:
+    push:
+        branches: [Current]
+    pull_request:
+        branches: [Current]
+    workflow_call:
+
+jobs:
+    Pre-Publish:
+        runs-on: ubuntu-latest
+
+        env:
+            ADBLOCK: true
+            ASTRO_TELEMETRY_DISABLED: 1
+            AUTOMATEDLAB_TELEMETRY_OPTOUT: 1
+            AZURE_CORE_COLLECT_TELEMETRY: 0
+            CHOOSENIM_NO_ANALYTICS: 1
+            DIEZ_DO_NOT_TRACK: 1
+            DO_NOT_TRACK: 1
+            DOTNET_CLI_TELEMETRY_OPTOUT: 1
+            DOTNET_INTERACTIVE_CLI_TELEMETRY_OPTOUT: 1
+            ET_NO_TELEMETRY: 1
+            GATSBY_TELEMETRY_DISABLED: 1
+            GATSBY_TELEMETRY_OPT_OUT: 1
+            GATSBY_TELEMETRY_OPTOUT: 1
+            GRIT_TELEMETRY_DISABLED: 1
+            HASURA_GRAPHQL_ENABLE_TELEMETRY: false
+            HINT_TELEMETRY: off
+            HOMEBREW_NO_ANALYTICS: 1
+            INFLUXD_REPORTING_DISABLED: true
+            ITERATIVE_DO_NOT_TRACK: 1
+            NEXT_TELEMETRY_DEBUG: 1
+            NEXT_TELEMETRY_DISABLED: 1
+            NG_CLI_ANALYTICS: false
+            NUXT_TELEMETRY_DISABLED: 1
+            PIN_DO_NOT_TRACK: 1
+            POWERSHELL_TELEMETRY_OPTOUT: 1
+            SAM_CLI_TELEMETRY: 0
+            STNOUPGRADE: 1
+            STRIPE_CLI_TELEMETRY_OPTOUT: 1
+            TELEMETRY_DISABLED: 1
+            TERRAFORM_TELEMETRY: 0
+            VCPKG_DISABLE_METRICS: 1
+
+        strategy:
+            matrix:
+                node-version: [18, 19, 20]
+
+        steps:
+            - uses: actions/checkout@v6.0.2
+
+            - uses: pnpm/action-setup@v6.0.8
+              with:
+                  version: 9.3.0
+                  run_install: |
+                      - recursive: true
+                        args: [
+                          --link-workspace-packages=true,
+                          --lockfile-only,
+                          --prefer-frozen-lockfile=false,
+                          --shamefully-hoist=false,
+                          --shared-workspace-lockfile=true,
+                          --strict-peer-dependencies=false,
+                          --unsafe-perm=true
+                        ]
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./examples/api/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./examples/api
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-examples-api-Node-${{ matrix.node-version }}-Target
+                  path: ./examples/api/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: .
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-Node-${{ matrix.node-version }}-Target
+                  path: ./Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/autostart/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/autostart
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-autostart-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/autostart/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/barcode-scanner/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/barcode-scanner
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-barcode-scanner-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/barcode-scanner/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/biometric/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/biometric
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-biometric-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/biometric/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/cli/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/cli
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-cli-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/cli/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/clipboard-manager/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/clipboard-manager
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-clipboard-manager-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/clipboard-manager/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/deep-link/examples/app/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/deep-link/examples/app
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-deep-link-examples-app-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/deep-link/examples/app/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/deep-link/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/deep-link
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-deep-link-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/deep-link/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/dialog/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/dialog
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-dialog-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/dialog/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/fs/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/fs
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-fs-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/fs/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/geolocation/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/geolocation
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-geolocation-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/geolocation/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/global-shortcut/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/global-shortcut
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-global-shortcut-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/global-shortcut/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/haptics/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/haptics
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-haptics-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/haptics/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/http/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/http
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-http-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/http/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/log/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/log
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-log-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/log/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/nfc/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/nfc
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-nfc-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/nfc/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/notification/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/notification
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-notification-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/notification/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/opener/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/opener
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-opener-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/opener/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/os/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/os
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-os-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/os/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/positioner/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/positioner
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-positioner-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/positioner/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/process/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/process
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-process-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/process/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/shell/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/shell
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-shell-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/shell/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/single-instance/examples/vanilla/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/single-instance/examples/vanilla
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/sql/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/sql
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-sql-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/sql/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/store/examples/AppSettingsManager/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/store/examples/AppSettingsManager
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-store-examples-AppSettingsManager-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/store/examples/AppSettingsManager/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/store/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/store
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-store-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/store/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/stronghold/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/stronghold
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-stronghold-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/stronghold/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/updater/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/updater
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-updater-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/updater/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/updater/tests/updater-migration/v1-app/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/updater/tests/updater-migration/v1-app
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/upload/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/upload
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-upload-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/upload/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/websocket/examples/tauri-app/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/websocket/examples/tauri-app
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-websocket-examples-tauri-app-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/websocket/examples/tauri-app/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/websocket/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/websocket
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-websocket-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/websocket/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./plugins/window-state/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./plugins/window-state
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-plugins-window-state-Node-${{ matrix.node-version }}-Target
+                  path: ./plugins/window-state/Target
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
+                  cache-dependency-path: ./shared/template/pnpm-lock.yaml
+
+            - run: pnpm install
+              working-directory: ./shared/template
+
+            - run: pnpm run build
+              working-directory: .
+
+            - uses: actions/upload-artifact@v7.0.1
+              with:
+                  name: .-shared-template-Node-${{ matrix.node-version }}-Target
+                  path: ./shared/template/Target

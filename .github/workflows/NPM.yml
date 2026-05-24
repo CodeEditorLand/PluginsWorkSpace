@@ -1,0 +1,265 @@
+name: NPM
+
+concurrency:
+    group: NPM-${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    security-events: write
+    contents: write
+    pull-requests: write
+
+on:
+    workflow_dispatch:
+    release:
+        types: [created]
+    workflow_call:
+
+jobs:
+    Publish:
+        runs-on: ubuntu-latest
+        environment: Release
+        env:
+            ADBLOCK: true
+            ASTRO_TELEMETRY_DISABLED: 1
+            AUTOMATEDLAB_TELEMETRY_OPTOUT: 1
+            AZURE_CORE_COLLECT_TELEMETRY: 0
+            CHOOSENIM_NO_ANALYTICS: 1
+            DIEZ_DO_NOT_TRACK: 1
+            DO_NOT_TRACK: 1
+            DOTNET_CLI_TELEMETRY_OPTOUT: 1
+            DOTNET_INTERACTIVE_CLI_TELEMETRY_OPTOUT: 1
+            ET_NO_TELEMETRY: 1
+            GATSBY_TELEMETRY_DISABLED: 1
+            GATSBY_TELEMETRY_OPT_OUT: 1
+            GATSBY_TELEMETRY_OPTOUT: 1
+            GRIT_TELEMETRY_DISABLED: 1
+            HASURA_GRAPHQL_ENABLE_TELEMETRY: false
+            HINT_TELEMETRY: off
+            HOMEBREW_NO_ANALYTICS: 1
+            INFLUXD_REPORTING_DISABLED: true
+            ITERATIVE_DO_NOT_TRACK: 1
+            NEXT_TELEMETRY_DEBUG: 1
+            NEXT_TELEMETRY_DISABLED: 1
+            NG_CLI_ANALYTICS: false
+            NUXT_TELEMETRY_DISABLED: 1
+            PIN_DO_NOT_TRACK: 1
+            POWERSHELL_TELEMETRY_OPTOUT: 1
+            SAM_CLI_TELEMETRY: 0
+            STNOUPGRADE: 1
+            STRIPE_CLI_TELEMETRY_OPTOUT: 1
+            TELEMETRY_DISABLED: 1
+            TERRAFORM_TELEMETRY: 0
+            VCPKG_DISABLE_METRICS: 1
+
+        permissions:
+            contents: read
+            id-token: write
+
+        steps:
+            - uses: actions/checkout@v6.0.2
+
+            - uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: "24"
+
+            - run: npm install -g npm@latest
+              continue-on-error: true
+
+            - name: Publish ./examples/api
+              continue-on-error: true
+              working-directory: ./examples/api
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish .
+              continue-on-error: true
+              working-directory: .
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/autostart
+              continue-on-error: true
+              working-directory: ./plugins/autostart
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/barcode-scanner
+              continue-on-error: true
+              working-directory: ./plugins/barcode-scanner
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/biometric
+              continue-on-error: true
+              working-directory: ./plugins/biometric
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/cli
+              continue-on-error: true
+              working-directory: ./plugins/cli
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/clipboard-manager
+              continue-on-error: true
+              working-directory: ./plugins/clipboard-manager
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/deep-link/examples/app
+              continue-on-error: true
+              working-directory: ./plugins/deep-link/examples/app
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/deep-link
+              continue-on-error: true
+              working-directory: ./plugins/deep-link
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/dialog
+              continue-on-error: true
+              working-directory: ./plugins/dialog
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/fs
+              continue-on-error: true
+              working-directory: ./plugins/fs
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/geolocation
+              continue-on-error: true
+              working-directory: ./plugins/geolocation
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/global-shortcut
+              continue-on-error: true
+              working-directory: ./plugins/global-shortcut
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/haptics
+              continue-on-error: true
+              working-directory: ./plugins/haptics
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/http
+              continue-on-error: true
+              working-directory: ./plugins/http
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/log
+              continue-on-error: true
+              working-directory: ./plugins/log
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/nfc
+              continue-on-error: true
+              working-directory: ./plugins/nfc
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/notification
+              continue-on-error: true
+              working-directory: ./plugins/notification
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/opener
+              continue-on-error: true
+              working-directory: ./plugins/opener
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/os
+              continue-on-error: true
+              working-directory: ./plugins/os
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/positioner
+              continue-on-error: true
+              working-directory: ./plugins/positioner
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/process
+              continue-on-error: true
+              working-directory: ./plugins/process
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/shell
+              continue-on-error: true
+              working-directory: ./plugins/shell
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/sql
+              continue-on-error: true
+              working-directory: ./plugins/sql
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/store/examples/AppSettingsManager
+              continue-on-error: true
+              working-directory: ./plugins/store/examples/AppSettingsManager
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/store
+              continue-on-error: true
+              working-directory: ./plugins/store
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/stronghold
+              continue-on-error: true
+              working-directory: ./plugins/stronghold
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/updater
+              continue-on-error: true
+              working-directory: ./plugins/updater
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/upload
+              continue-on-error: true
+              working-directory: ./plugins/upload
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/websocket/examples/tauri-app
+              continue-on-error: true
+              working-directory: ./plugins/websocket/examples/tauri-app
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/websocket
+              continue-on-error: true
+              working-directory: ./plugins/websocket
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./plugins/window-state
+              continue-on-error: true
+              working-directory: ./plugins/window-state
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts
+
+            - name: Publish ./shared/template
+              continue-on-error: true
+              working-directory: ./shared/template
+              run: |
+                  npm publish --legacy-peer-deps --ignore-scripts

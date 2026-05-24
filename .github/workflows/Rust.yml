@@ -1,0 +1,680 @@
+name: Rust
+
+concurrency:
+    group: Rust-${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    security-events: write
+
+on:
+    workflow_dispatch:
+    push:
+        branches: [Current]
+    pull_request:
+        branches: [Current]
+    workflow_call:
+
+jobs:
+    Build:
+        runs-on: ubuntu-latest
+
+        env:
+            ADBLOCK: true
+            ASTRO_TELEMETRY_DISABLED: 1
+            AUTOMATEDLAB_TELEMETRY_OPTOUT: 1
+            AZURE_CORE_COLLECT_TELEMETRY: 0
+            CHOOSENIM_NO_ANALYTICS: 1
+            DIEZ_DO_NOT_TRACK: 1
+            DO_NOT_TRACK: 1
+            DOTNET_CLI_TELEMETRY_OPTOUT: 1
+            DOTNET_INTERACTIVE_CLI_TELEMETRY_OPTOUT: 1
+            ET_NO_TELEMETRY: 1
+            GATSBY_TELEMETRY_DISABLED: 1
+            GATSBY_TELEMETRY_OPT_OUT: 1
+            GATSBY_TELEMETRY_OPTOUT: 1
+            GRIT_TELEMETRY_DISABLED: 1
+            HASURA_GRAPHQL_ENABLE_TELEMETRY: false
+            HINT_TELEMETRY: off
+            HOMEBREW_NO_ANALYTICS: 1
+            INFLUXD_REPORTING_DISABLED: true
+            ITERATIVE_DO_NOT_TRACK: 1
+            NEXT_TELEMETRY_DEBUG: 1
+            NEXT_TELEMETRY_DISABLED: 1
+            NG_CLI_ANALYTICS: false
+            NUXT_TELEMETRY_DISABLED: 1
+            PIN_DO_NOT_TRACK: 1
+            POWERSHELL_TELEMETRY_OPTOUT: 1
+            SAM_CLI_TELEMETRY: 0
+            STNOUPGRADE: 1
+            STRIPE_CLI_TELEMETRY_OPTOUT: 1
+            TELEMETRY_DISABLED: 1
+            TERRAFORM_TELEMETRY: 0
+            VCPKG_DISABLE_METRICS: 1
+
+        strategy:
+            matrix:
+                toolchain: ["stable", "nightly"]
+
+        steps:
+            - uses: actions/checkout@v6.0.2
+
+            - uses: actions-rs/toolchain@v1.0.7
+              with:
+                  profile: minimal
+                  toolchain: ${{ matrix.toolchain }}
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./examples/api/src-tauri/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./examples/api/src-tauri/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/autostart/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/autostart/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/barcode-scanner/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/barcode-scanner/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/biometric/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/biometric/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/cli/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/cli/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/clipboard-manager/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/clipboard-manager/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/deep-link/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/deep-link/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/deep-link/examples/app/src-tauri/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/deep-link/examples/app/src-tauri/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/dialog/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/dialog/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/fs/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/fs/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/geolocation/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/geolocation/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/global-shortcut/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/global-shortcut/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/haptics/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/haptics/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/http/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/http/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/localhost/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/localhost/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/log/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/log/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/nfc/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/nfc/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/notification/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/notification/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/opener/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/opener/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/os/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/os/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/persisted-scope/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/persisted-scope/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/positioner/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/positioner/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/process/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/process/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/shell/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/shell/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/single-instance/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/single-instance/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/single-instance/examples/vanilla/src-tauri/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/single-instance/examples/vanilla/src-tauri/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/sql/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/sql/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/store/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/store/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/store/examples/AppSettingsManager/src-tauri/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/store/examples/AppSettingsManager/src-tauri/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/stronghold/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/stronghold/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/updater/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/updater/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/updater/tests/app-updater/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/updater/tests/app-updater/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/updater/tests/updater-migration/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/updater/tests/updater-migration/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/updater/tests/updater-migration/v1-app/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/updater/tests/updater-migration/v1-app/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/updater/tests/updater-migration/v2-app/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/updater/tests/updater-migration/v2-app/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/upload/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/upload/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/websocket/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/websocket/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/websocket/examples/tauri-app/src-tauri/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/websocket/examples/tauri-app/src-tauri/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./plugins/window-state/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./plugins/window-state/Cargo.toml
+
+            - uses: actions/cache@v5.0.5
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                      Target/
+                  key: ${{ runner.os }}-cargo-${{ hashFiles('./shared/template/Cargo.toml') }}
+            - uses: actions-rs/cargo@v1.0.3
+              with:
+                command: build
+                args: --release --all-features --manifest-path ./shared/template/Cargo.toml

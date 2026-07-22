@@ -10,12 +10,12 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@tauri-apps/api": "^2.11.0",
+    "@tauri-apps/api": "^2.11.1",
     "@tauri-apps/plugin-barcode-scanner": "^2.4.5",
     "@tauri-apps/plugin-biometric": "^2.3.2",
     "@tauri-apps/plugin-cli": "^2.4.1",
     "@tauri-apps/plugin-clipboard-manager": "^2.3.2",
-    "@tauri-apps/plugin-dialog": "^2.7.1",
+    "@tauri-apps/plugin-dialog": "^2.7.2",
     "@tauri-apps/plugin-fs": "^2.5.1",
     "@tauri-apps/plugin-geolocation": "^2.3.2",
     "@tauri-apps/plugin-global-shortcut": "^2.3.2",
@@ -27,19 +27,19 @@
     "@tauri-apps/plugin-os": "^2.3.2",
     "@tauri-apps/plugin-process": "^2.3.1",
     "@tauri-apps/plugin-shell": "^2.3.5",
-    "@tauri-apps/plugin-store": "^2.4.3",
+    "@tauri-apps/plugin-store": "^2.4.4",
     "@tauri-apps/plugin-updater": "^2.10.1",
     "@tauri-apps/plugin-upload": "^2.4.0",
     "@zerodevx/svelte-json-view": "1.0.11"
   },
   "devDependencies": {
-    "@iconify-json/codicon": "^1.2.56",
+    "@iconify-json/codicon": "^1.2.63",
     "@iconify-json/ph": "^1.2.2",
-    "@sveltejs/vite-plugin-svelte": "^7.0.0",
-    "@tauri-apps/cli": "2.11.2",
-    "@unocss/extractor-svelte": "^66.6.7",
-    "svelte": "^5.54.0",
-    "unocss": "^66.6.7",
-    "vite": "^8.0.1"
+    "@sveltejs/vite-plugin-svelte": "^7.2.0",
+    "@tauri-apps/cli": "2.11.4",
+    "@unocss/extractor-svelte": "^66.7.5",
+    "svelte": "^5.56.6",
+    "unocss": "^66.7.5",
+    "vite": "^8.1.5"
   }
 }
